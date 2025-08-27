@@ -111,6 +111,40 @@ header h1 {
     margin-bottom: 0;
 }
 
+/* New Chat Button */
+.new-chat-button {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    border: none;
+    background: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.new-chat-button:hover {
+    color: var(--primary-color);
+}
+
+.new-chat-button:focus {
+    outline: none;
+    color: var(--primary-color);
+}
+
+.new-chat-icon {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
 /* Main Chat Area */
 .chat-main {
     flex: 1;
@@ -243,6 +277,30 @@ header h1 {
 .sources-content {
     padding: 0 0.5rem 0.25rem 1.5rem;
     color: var(--text-secondary);
+}
+
+/* Links in sources section */
+.sources-content a {
+    color: #60a5fa; /* Light blue that's readable on dark background */
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.sources-content a:hover {
+    color: #93c5fd; /* Lighter blue on hover */
+    border-bottom-color: #60a5fa;
+    text-shadow: 0 0 4px rgba(96, 165, 250, 0.3);
+}
+
+.sources-content a:visited {
+    color: #c4b5fd; /* Light purple for visited links */
+}
+
+.sources-content a:visited:hover {
+    color: #ddd6fe; /* Lighter purple on hover for visited links */
+    border-bottom-color: #c4b5fd;
+    text-shadow: 0 0 4px rgba(196, 181, 253, 0.3);
 }
 
 /* Markdown formatting styles */
@@ -708,6 +766,15 @@ details[open] .suggested-header::before {
     .suggested-item {
         padding: 0.5rem 0.75rem;
         font-size: 0.8rem;
+    }
+    
+    .new-chat-button {
+        padding: 0.5rem 0;
+        font-size: 0.8rem;
+    }
+    
+    .new-chat-icon {
+        font-size: 0.75rem;
     }
 }
 

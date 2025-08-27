@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(chmod:*)",
-      "Bash(./run.sh)"
+      "Bash(./run.sh)",
+      "Bash(python test:*)",
+      "Bash(del test_clickable_sources.py test_simple.py)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

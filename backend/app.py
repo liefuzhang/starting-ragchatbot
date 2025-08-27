@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union, Dict, Any
 import os
 import logging
 import sys
@@ -53,10 +53,15 @@ class QueryRequest(BaseModel):
     query: str
     session_id: Optional[str] = None
 
+class SourceItem(BaseModel):
+    """Model for a source citation with optional clickable link"""
+    text: str
+    url: Optional[str] = None
+
 class QueryResponse(BaseModel):
     """Response model for course queries"""
     answer: str
-    sources: List[str]
+    sources: List[Union[str, SourceItem]]  # Support both old format (strings) and new format (objects)
     session_id: str
 
 class CourseStats(BaseModel):
@@ -78,9 +83,19 @@ async def query_documents(request: QueryRequest):
         # Process query using RAG system
         answer, sources = rag_system.query(request.query, session_id)
         
+        # Convert sources to proper format
+        formatted_sources = []
+        for source in sources:
+            if isinstance(source, dict) and 'text' in source:
+                # New format with text and optional URL
+                formatted_sources.append(SourceItem(text=source['text'], url=source.get('url')))
+            else:
+                # Old format (string) - convert to SourceItem
+                formatted_sources.append(SourceItem(text=str(source), url=None))
+        
         return QueryResponse(
             answer=answer,
-            sources=sources,
+            sources=formatted_sources,
             session_id=session_id
         )
     except Exception as e:
