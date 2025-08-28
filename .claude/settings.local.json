@@ -5,7 +5,13 @@
       "Bash(./run.sh)",
       "Bash(python test:*)",
       "Bash(del test_clickable_sources.py test_simple.py)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(python -m pytest backend/tests/ -v)",
+      "Bash(pip install:*)",
+      "Bash(python -m pytest tests/test_integration.py -v -s)",
+      "Bash(python:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

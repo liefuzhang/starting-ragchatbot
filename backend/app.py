@@ -143,5 +143,12 @@ class DevStaticFiles(StaticFiles):
         return response
     
     
-# Serve static files for the frontend
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
+# Serve static files for the frontend - use absolute path resolution
+from pathlib import Path
+backend_dir = Path(__file__).parent
+frontend_dir = backend_dir.parent / "frontend"
+
+if frontend_dir.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="static")
+else:
+    logger.warning(f"Frontend directory not found: {frontend_dir}")
