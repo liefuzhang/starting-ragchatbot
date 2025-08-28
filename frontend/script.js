@@ -5,7 +5,7 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton, themeToggle;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
     newChatButton = document.getElementById('newChatButton');
+    themeToggle = document.getElementById('themeToggle');
     
     setupEventListeners();
+    initializeTheme();
     createNewSession();
     loadCourseStats();
 });
@@ -32,6 +34,15 @@ function setupEventListeners() {
     
     // New chat button
     newChatButton.addEventListener('click', createNewSession);
+    
+    // Theme toggle button
+    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleTheme();
+        }
+    });
     
     // Suggested questions
     document.querySelectorAll('.suggested-item').forEach(button => {
@@ -214,5 +225,45 @@ async function loadCourseStats() {
         if (courseTitles) {
             courseTitles.innerHTML = '<span class="error">Failed to load courses</span>';
         }
+    }
+}
+
+// Theme Management
+function initializeTheme() {
+    // Check if user has a saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Use saved theme, or default to dark if no preference
+    const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+    
+    if (theme === 'light') {
+        document.body.classList.add('light-theme');
+        updateToggleAriaLabel('Switch to dark theme');
+    } else {
+        document.body.classList.remove('light-theme');
+        updateToggleAriaLabel('Switch to light theme');
+    }
+}
+
+function toggleTheme() {
+    const isLight = document.body.classList.contains('light-theme');
+    
+    if (isLight) {
+        // Switch to dark
+        document.body.classList.remove('light-theme');
+        localStorage.setItem('theme', 'dark');
+        updateToggleAriaLabel('Switch to light theme');
+    } else {
+        // Switch to light
+        document.body.classList.add('light-theme');
+        localStorage.setItem('theme', 'light');
+        updateToggleAriaLabel('Switch to dark theme');
+    }
+}
+
+function updateToggleAriaLabel(label) {
+    if (themeToggle) {
+        themeToggle.setAttribute('aria-label', label);
     }
 }
