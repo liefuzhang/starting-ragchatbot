@@ -32,3 +32,9 @@ Thumbs.db
 
 # Screenshots
 .claude-images
+
+# Log files
+*.log
+app.log
+backend/app.log
+
